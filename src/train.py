@@ -69,12 +69,9 @@ def overfit_single_batch(model, train_loader, device="cuda", lr=1e-6, max_steps=
         input_prompts = ["Pathology report:" for _ in batch["report"]]
         loss, _, organ_logits, sample_logits, finding_logits = model(
             features=batch["features"].to(device),
-            prompt_embedding=batch.get("prompt_embedding", None).to(device) if batch.get("prompt_embedding", None) is not None else None,
+            label_embedding=batch.get("label_embedding", None).to(device) if batch.get("label_embedding", None) is not None else None,
             input_texts=input_prompts,
             labels=batch["report"],   # list of strings (reports)
-            organ_idx=batch["organ_idx"].to(device),
-            sample_idx=batch["sample_idx"].to(device),
-            finding_idx=batch["finding_idx"].to(device),
         )
 
         # === Organ loss ===
@@ -124,8 +121,7 @@ def train_one_fold(train_data, val_data, fold):
     print(f"\n--- Fold {fold + 1}/{K_FOLDS} ---")
 
     model = BioBARTPromptModel().to(DEVICE)
-    tokenizer = model.tokenizer
-
+    
     optimizer = AdamW(get_trainable_params(model), lr=LR, weight_decay=0.01)
     total_steps = (len(train_data) // BATCH_SIZE) * EPOCHS
 
@@ -180,12 +176,9 @@ def train_one_fold(train_data, val_data, fold):
                 prompts = ["Pathology report:" if np.random.rand() > 0.2 else "" for _ in organs]
                 loss, _, organ_logits, sample_logits, finding_logits = model(
                     features=batch["features"].to(DEVICE),
-                    prompt_embedding=(batch.get("prompt_embedding", None).to(DEVICE) if batch.get("prompt_embedding", None) is not None else None),
+                    label_embedding=(batch.get("label_embedding", None).to(DEVICE) if batch.get("label_embedding", None) is not None else None),
                     input_texts=prompts,
                     labels=list(batch["report"]),   # list of strings
-                    organ_idx=batch["organ_idx"].to(DEVICE),
-                    sample_idx=batch["sample_idx"].to(DEVICE),
-                    finding_idx=batch["finding_idx"].to(DEVICE),
                 )
 
                 # Default losses

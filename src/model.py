@@ -60,34 +60,31 @@ class BioBARTPromptModel(nn.Module):
     def forward(
         self,
         features=None,               # WSI features (preferred)
-        prompt_embedding=None,       # fallback if features is not provided
-        organ_idx=None,
-        sample_idx=None,
-        finding_idx=None,
+        label_embedding=None,       # fallback if features is not provided
         input_texts=None,            # list of strings, optional (prefix/prompts)
         labels=None                  # list of ground-truth reports (strings) OR token ids
     ):
         """
-        If `labels` is provided, compute LM loss; otherwise lm_loss = 0.0.
+        If 'labels' is provided, compute LM loss; otherwise lm_loss = 0.0.
         Returns: (lm_loss, lm_logits, organ_logits, sample_logits, finding_logits)
         """
 
         device = None
-        # determine device based on provided features or prompt_embedding
+        # determine device based on provided features or label_embedding
         if isinstance(features, torch.Tensor):
             device = features.device
-        elif isinstance(prompt_embedding, torch.Tensor):
-            device = prompt_embedding.device
+        elif isinstance(label_embedding, torch.Tensor):
+            device = label_embedding.device
         else:
             # fallback: CPU - but training expects tensors on GPU
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        # choose visual input: prefer features (WSI), otherwise prompt_embedding (precomputed)
+        # choose visual input: prefer features (WSI), otherwise label_embedding (precomputed)
         visual_input = None
         if features is not None:
             visual_input = features
-        elif prompt_embedding is not None:
-            visual_input = prompt_embedding
+        elif label_embedding is not None:
+            visual_input = label_embedding
         else:
             visual_input = None
 
@@ -114,7 +111,7 @@ class BioBARTPromptModel(nn.Module):
 
             # compute prefix embeddings using visual input (must exist)
             if visual_input is None:
-                raise ValueError("visual features (features or prompt_embedding) must be provided when computing LM loss")
+                raise ValueError("visual features (features or label_embedding) must be provided when computing LM loss")
 
             prefix = self.visual_projector(visual_input)  # [B, prefix_tokens * d_model]
             batch_size = input_ids.size(0)
