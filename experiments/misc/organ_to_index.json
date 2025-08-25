@@ -1,0 +1,14 @@
+{
+  "anus": 0,
+  "bladder": 1,
+  "breast": 2,
+  "cervix": 3,
+  "colon": 4,
+  "lung": 5,
+  "nipple": 6,
+  "prostate": 7,
+  "rectum": 8,
+  "stomach": 9,
+  "urinary bladder": 10,
+  "uterine cervix": 11
+}
