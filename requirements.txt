@@ -1,0 +1,25 @@
+# Core
+numpy==1.26.4
+pandas==2.3.1
+scikit-learn==1.7.0
+joblib==1.5.1
+matplotlib==3.10.3
+tqdm==4.67.1
+
+# PyTorch & ecosystem
+torch==2.2.1
+torchvision==0.22.1
+torchmetrics==1.8.0
+
+# Transformers
+transformers==4.30.2
+sentencepiece==0.2.0
+
+# HDF5 support
+h5py==3.14.0
+
+# Optional: for scaling & serialization
+scipy==1.15.3
+
+# Optional: for preprocessing / text / tokenization
+regex==2024.11.6
