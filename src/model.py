@@ -21,7 +21,7 @@ class BioBARTPromptModel(nn.Module):
     ):
         super().__init__()
 
-        # tokenizer + base seq2seq LM (we will *not* use PEFT wrapper here to avoid runtime wrapper issues)
+        # tokenizer + base seq2seq LM (not using PEFT wrapper here to avoid runtime wrapper issues)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         base_model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 

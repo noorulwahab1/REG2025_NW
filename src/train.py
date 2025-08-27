@@ -63,8 +63,6 @@ def overfit_single_batch(model, train_loader, device="cuda", lr=1e-6, max_steps=
     for step in range(1, max_steps + 1):
         optimizer.zero_grad()
 
-        #print("Batch keys are:", batch.keys())
-
         # use actual reports as labels and provide a short prompt
         input_prompts = ["Pathology report:" for _ in batch["report"]]
         loss, _, organ_logits, sample_logits, finding_logits = model(

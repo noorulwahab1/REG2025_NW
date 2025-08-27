@@ -84,7 +84,7 @@ def generate_reports(models, dataset, scalers=None):
         organs = batch["organ"]
         
         prompts = ["Pathology report:" if np.random.rand() > 0.2 else "" for _ in organs]
-
+        #prompts = ["Pathology report:" for _ in organs]  ## keep the first one for the time being to be consistent with the submission
 
         all_outputs = []
 

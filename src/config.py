@@ -29,7 +29,7 @@ REPORTS_JSON = "./experiments/misc/train.json"
 LABEL_CSV = "./experiments/misc/labels.csv"
 CORRUPTED_IDS_CSV = "./experiments/misc/corrupted_id.csv"
 ORGAN_TO_INDEX_JSON = "./experiments/misc/organ_to_index.json"
-LABEL_EMBEDDING_PATH = "./experiments/misc/prompt_embeddings.pt"
+LABEL_EMBEDDING_PATH = "./experiments/misc/label_embeddings.pt"
 FOLDS_PATH = "./experiments/folds/"
 
 EPOCHS = 141  ###@@@@@@@@@@@@@@@@@@@@@@@
@@ -75,6 +75,7 @@ SAMPLE_TYPE_MAP = {
     for _, row in label_df.iterrows()
     if pd.notna(row["Sample_Type"])
 }
+
 
 SAMPLE_IDX_MAP = {
     k: SAMPLE_TYPE2IDX.get(v.lower(), -1)

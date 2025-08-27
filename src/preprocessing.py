@@ -56,7 +56,7 @@ def generate_label_embeddings(lbl_csv, save_to, model_name='gpt2', device='cuda'
     df = pd.read_csv(lbl_csv)
 
     # Check for required columns
-    ## ToDo: ideally the Findings_Label column should have been used but keeping this for the current model states
+    ## ToDo: ideally the Findings_Label column should have been used but keeping this for the current model states as label_embedding are not using currently
     required_cols = {"Case_ID", "Organ", "Sample_Type", "Findings"}
     if not required_cols.issubset(set(df.columns)):
         raise ValueError(f"Missing columns in label CSV. Required: {required_cols}")
@@ -76,7 +76,7 @@ def generate_label_embeddings(lbl_csv, save_to, model_name='gpt2', device='cuda'
         case_id = row["Case_ID"]
         organ = str(row["Organ"])
         sample_type = str(row["Sample_Type"])
-        findings = str(row["Findings"]) ## ToDo: ideally the Findings_Label column should have been used but keeping this for the current model states
+        findings = str(row["Findings"]) ## ToDo: ideally the Findings_Label column should have been used but keeping this for the current model states as label_embedding are not using currently
     
         label = f"Organ: {organ}. Sample Type: {sample_type}. Findings: {findings}."
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     generate_labels_csv(reports_json, label_csv)
     ## Note that findings list is refined manually and added as a new column Findings_Label to the generated labels.csv file.
 
-    emb_save_to = "./experiments/misc/prompt_embeddings.pt"
+    emb_save_to = "./experiments/misc/label_embeddings.pt"
     generate_label_embeddings(label_csv, emb_save_to)
 
     org_ind_save_to = "./experiments/misc/organ_to_index.json"
